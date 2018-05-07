@@ -26,16 +26,32 @@ var questions = [];
 getQuestions(function (data) {
     questions = data;
 });
+
+
 var questionContainer = document.querySelector('.question__display')
-var optionsContainer = document.querySelector('option__display')
+var optionContainer = document.querySelector('.option__display')
+
 var button = document.querySelector('button')
 button.addEventListener('click', displayQuestion)
 
 var i = 0;
-function displayQuestion() {
 
+function displayQuestion() {
+    var myNode = document.querySelector('.option__display')
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+        console.log(myNode)
+    }
     questionContainer.innerHTML = questions[i].question.text;
-    i++
+    for (var j = 0; j < questions[i].answers.length; j++) {
+        var optionText = questions[i].answers[j].text;
+        var optionLink = document.createElement('li')
+        optionContainer.appendChild(optionLink)
+        optionLink.innerHTML = optionText;
+
+    }
+    i++;
+
 }
 
 // questions.forEach(function (element) {
