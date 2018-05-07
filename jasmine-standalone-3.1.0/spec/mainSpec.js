@@ -117,10 +117,10 @@ describe('calculo de marcador', function(){
     function recalcularSinRespuesta(marcador){
         return marcador -3;
     }
-
   it("suma mas puntos si acierta muy rapido", function(){
       expect(recalcularAcertandoPregunta(0, true, 1)).toBe(2);
-      expect(recalcularAcertandoPregunta(2, true, 2)).toBe(4);
+      expect(recalcularAcertandoPregunta
+(2, true, 2)).toBe(4);
       expect(recalcularAcertandoPregunta(1, true, 1)).toBe(3);
   });
 
@@ -189,3 +189,39 @@ describe("comprobador de respuestas", function(){
 
      });
 });
+
+
+
+//funcionamiento jasmine con JS
+// function describe(theSubject, funct){
+// 	try{
+// 		funct();
+//     }
+// 	catch(error){
+// 		throw theSubject + error
+// 	}
+// }
+
+// function it(theSubject, funct){
+// 	try{
+// 		it();
+//     }
+// 	catch(error){
+// 		throw theSubject + error
+//     }
+// }
+
+// function expect(actual){
+//     return{
+// 	toEqual: function(expected){
+// 			if(actual == expected){
+// 				console.log('green');
+//             }
+// 			else{
+// 				console.log('red');
+//             }
+//             }
+//     }   
+
+// }
+// expect(2).toEqual(1);
