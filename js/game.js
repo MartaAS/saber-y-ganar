@@ -51,6 +51,7 @@ buttonNextQuestion.addEventListener('click', displayQuestion);
 
 
 function displayQuestion() {
+    buttonNextQuestion.classList.add('hidden');
     var questionContainer = document.querySelector('.question__display');
     var optionContainer = document.querySelector('.option__display');
 
@@ -76,8 +77,13 @@ function displayQuestion() {
         //startTime = Date.now();
         showClickedOption();
     }
-    else if (i == questions.length) {
+    else if (i === questions.length) {
         displayHistoricGame();
+        questionContainer.innerHTML = '';
+        i = 0;
+        buttonNextQuestion.classList.remove('hidden');
+
+
     }
 }
 
@@ -89,6 +95,7 @@ function displayHistoricGame() {
     var userNameContainer = document.createElement('p');
     var userPointsContainer = document.createElement('p');
     var userName = document.createTextNode('marta');
+
     userNameContainer.appendChild(userName);
     userPointsContainer.appendChild(userHistoricContainer);
     userHistoricContainer.appendChild(userNameContainer);
