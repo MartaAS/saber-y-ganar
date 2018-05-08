@@ -34,8 +34,6 @@ var buttonNextQuestion = document.querySelector('button');
 buttonNextQuestion.addEventListener('click', displayQuestion);
 
 
-
-
 function displayQuestion() {
     var questionContainer = document.querySelector('.question__display');
     var optionContainer = document.querySelector('.option__display');
