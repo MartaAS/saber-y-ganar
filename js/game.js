@@ -27,7 +27,6 @@ getQuestions(function (data) {
     questions = data;
 });
 
-
 var questionContainer = document.querySelector('.question__display')
 var optionContainer = document.querySelector('.option__display')
 
@@ -45,27 +44,34 @@ function displayQuestion() {
     questionContainer.innerHTML = questions[i].question.text;
     for (var j = 0; j < questions[i].answers.length; j++) {
         var optionText = questions[i].answers[j].text;
-        var optionLink = document.createElement('li')
-        optionContainer.appendChild(optionLink)
-        optionLink.innerHTML = optionText;
+        var optionId = questions[i].answers[j].id;
 
+        optionLink = document.createElement('li');
+        optionContainer.appendChild(optionLink);
+        optionLink.innerHTML = optionText + ' ' + optionId;
     }
     i++;
-
+    showClickedOption();
 }
 
-// questions.forEach(function (element) {
-//     singleQuestion = element.question.text;
-//     questionContainer.innerHTML += singleQuestion;
-//     options = element.answers;
-//     console.log(singleQuestion)
-//     options.forEach(function (option) {
-//         option = option.text;
-//         console.log(option)
-//     });
-// });
 
-// for (var i = 0; i < questions.length; i++) {
-//     questionContainer.innerHTML += questions[i].question.text;
 
-// }
+
+function showClickedOption() {
+    var listOptions = document.getElementsByTagName('li');
+    for (var i = 0; i < listOptions.length; i++) {
+        listOptions[i].addEventListener('click', function () {
+            if ()
+
+
+        })
+    }
+}
+
+
+
+
+
+
+
+

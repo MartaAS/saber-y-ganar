@@ -1,3 +1,15 @@
 body{
   background-color: aquamarine;
 }
+.active {
+  color: red;
+}
+
+li:hover {
+  cursor: pointer;
+  color: green;
+}
+
+li:focus {
+  color: red;
+}
