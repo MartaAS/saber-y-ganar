@@ -27,28 +27,35 @@ getQuestions(function (data) {
     questions = data;
 });
 
-var questionContainer = document.querySelector('.question__display')
-var optionContainer = document.querySelector('.option__display')
-
-var button = document.querySelector('button')
-button.addEventListener('click', displayQuestion)
-
 var i = 0;
+var userPoints = 0;
+var correctAnswer;
+var buttonNextQuestion = document.querySelector('button');
+buttonNextQuestion.addEventListener('click', displayQuestion);
+
+
+
 
 function displayQuestion() {
-    var myNode = document.querySelector('.option__display')
-    while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
-        console.log(myNode)
+    var questionContainer = document.querySelector('.question__display');
+    var optionContainer = document.querySelector('.option__display');
+
+    while (optionContainer.firstChild) {
+        optionContainer.removeChild(optionContainer.firstChild);
+        console.log(optionContainer);
     }
+
     questionContainer.innerHTML = questions[i].question.text;
+    correctAnswer = questions[i].correctAnswerId;
+
     for (var j = 0; j < questions[i].answers.length; j++) {
         var optionText = questions[i].answers[j].text;
         var optionId = questions[i].answers[j].id;
 
         optionLink = document.createElement('li');
+        optionLink.id = optionId
         optionContainer.appendChild(optionLink);
-        optionLink.innerHTML = optionText + ' ' + optionId;
+        optionLink.innerHTML = optionText;
     }
     i++;
     showClickedOption();
@@ -56,17 +63,40 @@ function displayQuestion() {
 
 
 
-
 function showClickedOption() {
     var listOptions = document.getElementsByTagName('li');
     for (var i = 0; i < listOptions.length; i++) {
-        listOptions[i].addEventListener('click', function () {
-            if ()
-
-
-        })
+        listOptions[i].addEventListener('click', showAnswerFeedback)
     }
 }
+
+
+function showAnswerFeedback() {
+    if (this.id == correctAnswer) {
+        addPoints();
+        console.log('okeeii', userPoints);
+        displayQuestion();
+    }
+    else {
+        removePoints();
+        console.log('fatal', userPoints);
+        displayQuestion();
+    }
+}
+
+
+function addPoints() {
+    userPoints++
+}
+
+function removePoints() {
+    userPoints--
+}
+
+
+
+
+
 
 
 
