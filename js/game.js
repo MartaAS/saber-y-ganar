@@ -45,14 +45,12 @@ getQuestions(function (data) {
 var i = 0;
 var userPoints = 0;
 var correctAnswer;
-var startTime;
 var buttonNextQuestion = document.querySelector('button');
 buttonNextQuestion.addEventListener('click', displayQuestion);
 
 
 
 function displayQuestion() {
-
     var questionContainer = document.querySelector('.question__display');
     var optionContainer = document.querySelector('.option__display');
 
@@ -103,14 +101,13 @@ function displayHistoricGame() {
 
 function showClickedOption() {
     var listOptions = document.getElementsByTagName('li');
-    for (var r = 0; r < listOptions.length; r++) {
-        listOptions[r].addEventListener('click', showAnswerFeedback)
+    for (var i = 0; i < listOptions.length; i++) {
+        listOptions[i].addEventListener('click', showAnswerFeedback)
     }
 }
 
 
 function showAnswerFeedback() {
-    var endTime = Date.now();
     if (this.id == correctAnswer) {
         addPoints();
         console.log('okeeii', userPoints);
@@ -135,8 +132,6 @@ function addPoints() {
 function removePoints() {
     userPoints--
 }
-
-
 
 
 
