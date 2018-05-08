@@ -30,13 +30,14 @@ getQuestions(function (data) {
 var i = 0;
 var userPoints = 0;
 var correctAnswer;
+var startTime;
 var buttonNextQuestion = document.querySelector('button');
 buttonNextQuestion.addEventListener('click', displayQuestion);
 
 
 
-
 function displayQuestion() {
+
     var questionContainer = document.querySelector('.question__display');
     var optionContainer = document.querySelector('.option__display');
 
@@ -44,7 +45,8 @@ function displayQuestion() {
         optionContainer.removeChild(optionContainer.firstChild);
         console.log(optionContainer);
     }
-
+    if(i < questions.length) {
+        
     questionContainer.innerHTML = questions[i].question.text;
     correctAnswer = questions[i].correctAnswerId;
 
@@ -58,29 +60,38 @@ function displayQuestion() {
         optionLink.innerHTML = optionText;
     }
     i++;
+    startTime = Date.now();  
     showClickedOption();
+    }
 }
+
+
 
 
 
 function showClickedOption() {
     var listOptions = document.getElementsByTagName('li');
-    for (var i = 0; i < listOptions.length; i++) {
-        listOptions[i].addEventListener('click', showAnswerFeedback)
+    for (var r = 0; r < listOptions.length; r++) {
+        listOptions[r].addEventListener('click', showAnswerFeedback)
     }
 }
 
 
 function showAnswerFeedback() {
+    var endTime = Date.now();
     if (this.id == correctAnswer) {
         addPoints();
         console.log('okeeii', userPoints);
         displayQuestion();
+        var totalTime = (endTime - startTime)/1000;
+        console.log(totalTime);
     }
     else {
         removePoints();
         console.log('fatal', userPoints);
         displayQuestion();
+        var totalTime = (endTime - startTime)/1000;
+        console.log(totalTime);
     }
 }
 
@@ -92,6 +103,8 @@ function addPoints() {
 function removePoints() {
     userPoints--
 }
+
+
 
 
 
