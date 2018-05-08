@@ -76,6 +76,7 @@ function displayQuestion() {
         i++;
         //startTime = Date.now();
         showClickedOption();
+        myFunction();
     }
     else if (i === questions.length) {
         displayHistoricGame();
@@ -138,6 +139,20 @@ function addPoints() {
 
 function removePoints() {
     userPoints--
+}
+
+function myFunction() {
+    var count = 2;
+    var number = document.getElementById('numero');
+    var intervalo = setInterval(function () {
+        count--;
+        number.innerHTML = count;
+        if (count == 0) {
+            clearInterval(intervalo);
+            displayQuestion();
+            number.innerHTML = '';
+        }
+    }, 1000);
 }
 
 
