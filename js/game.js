@@ -58,21 +58,43 @@ function displayQuestion() {
         optionContainer.removeChild(optionContainer.firstChild);
         console.log(optionContainer);
     }
+    if (i < questions.length) {
 
-    questionContainer.innerHTML = questions[i].question.text;
-    correctAnswer = questions[i].correctAnswerId;
+        questionContainer.innerHTML = questions[i].question.text;
+        correctAnswer = questions[i].correctAnswerId;
 
-    for (var j = 0; j < questions[i].answers.length; j++) {
-        var optionText = questions[i].answers[j].text;
-        var optionId = questions[i].answers[j].id;
+        for (var j = 0; j < questions[i].answers.length; j++) {
+            var optionText = questions[i].answers[j].text;
+            var optionId = questions[i].answers[j].id;
 
-        optionLink = document.createElement('li');
-        optionLink.id = optionId
-        optionContainer.appendChild(optionLink);
-        optionLink.innerHTML = optionText;
+            optionLink = document.createElement('li');
+            optionLink.id = optionId
+            optionContainer.appendChild(optionLink);
+            optionLink.innerHTML = optionText;
+        }
+        i++;
+        //startTime = Date.now();
+        showClickedOption();
     }
-    i++;
-    showClickedOption();
+    else if (i == questions.length) {
+        displayHistoricGame();
+    }
+}
+
+
+
+function displayHistoricGame() {
+    var historicGame = document.querySelector('.historic__game');
+    var userHistoricContainer = document.createElement('div');
+    var userNameContainer = document.createElement('p');
+    var userPointsContainer = document.createElement('p');
+    var userName = document.createTextNode('marta');
+    userNameContainer.appendChild(userName);
+    userPointsContainer.appendChild(userHistoricContainer);
+    userHistoricContainer.appendChild(userNameContainer);
+    historicGame.appendChild(userHistoricContainer);
+    userPointsContainer.innerHTML = userPoints;
+    userHistoricContainer.appendChild(userPointsContainer);
 }
 
 
@@ -90,11 +112,15 @@ function showAnswerFeedback() {
         addPoints();
         console.log('okeeii', userPoints);
         displayQuestion();
+        //var totalTime = (endTime - startTime)/1000;
+        //console.log(totalTime);
     }
     else {
         removePoints();
         console.log('fatal', userPoints);
         displayQuestion();
+        //var totalTime = (endTime - startTime)/1000;
+        //console.log(totalTime);
     }
 }
 
