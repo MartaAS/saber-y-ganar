@@ -16,6 +16,21 @@ function getQuestions(callback) {
             answers: [{ id: 7, text: 'C1' }, { id: 8, text: 'C2' }, { id: 9, text: 'C3' }],
             correctAnswerId: 9
         },
+        {
+            question: { id: 4, text: 'Pregunta4' },
+            answers: [{ id: 10, text: 'A1' }, { id: 11, text: 'A2' }, { id: 12, text: 'A3' }],
+            correctAnswerId: 11
+        },
+        {
+            question: { id: 5, text: 'Pregunta5' },
+            answers: [{ id: 13, text: 'B1' }, { id: 14, text: 'B2' }, { id: 15, text: 'B3' }],
+            correctAnswerId: 15
+        },
+        {
+            question: { id: 6, text: 'Pregunta6' },
+            answers: [{ id: 16, text: 'C1' }, { id: 17, text: 'C2' }, { id: 18, text: 'C3' }],
+            correctAnswerId: 17
+        },
     ]
     callback(serverData);
 };
