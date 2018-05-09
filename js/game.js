@@ -126,7 +126,14 @@ function application() {
 
 
     var checksIfchecked = () => {
-        var answerInput = document.getElementsByTagName('input')
+        var answerInput     = document.getElementsByTagName('input')
+        var currentQuestion = document.querySelector('.question__display');
+        var foundQuestion   = questions.find(function(question) {
+                                               if (question.id == 300) {
+                                                 return question;
+                                                }
+                              });
+        foundQuestion.correctAnswerId
         var value;
         for (var r = 0; r < answerInput.length; r++) {
             if (answerInput[r].checked) {
@@ -162,14 +169,3 @@ function application() {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
