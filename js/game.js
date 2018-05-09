@@ -2,17 +2,19 @@ function application() {
     var questions = [];
     var time;
     var i = 0;
-    var userPoints = 0;
-    var questionContainer = document.querySelector('.question__display');
-    var buttonStartGame = document.querySelector('.button__start');
     var correctAnswer;
     var interval;
+    var userPoints = 0;
+    var result = "";
+    var questionContainer = document.querySelector('.question__display');
+    var buttonStartGame = document.querySelector('.button__start');
+
 
     function start() {
         buttonStartGame.addEventListener('click', function () {
+            countDownQuestion();
             checksIfchecked();
             displayQuestion();
-            countDownQuestion();
         });
     }
     function getQuestions(callback) {
@@ -60,11 +62,10 @@ function application() {
 
         while (answersContainer.firstChild) {
             answersContainer.removeChild(answersContainer.firstChild);
-            console.log(answersContainer);
         }
 
         if (i < questions.length) {
-            time = 2;
+            time = 10;
             var allQuestions = "";
             questionContainer.innerHTML = questions[i].question.text;
             correctAnswer = questions[i].correctAnswerId;
@@ -84,9 +85,28 @@ function application() {
             i++;
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
         } else {
+            var endGame = document.querySelector('.end__game');
             questionContainer.innerHTML = '';
             clearTheInterval();
+            showHistoryGame();
+            i = 0;
         }
+    }
+
+    function showHistoryGame() {
+        var historyContainer = document.querySelector('.historic__game');
+        result += `<p>Marta</p><p>${userPoints}</p>`
+        historyContainer.innerHTML = result;
+        console.log(result);
+    }
+
+    function addPoints() {
+        userPoints++
+        console.log(userPoints);
+    }
+
+    function removePoints() {
+        userPoints--
     }
 
     var checksIfchecked = () => {
@@ -96,9 +116,9 @@ function application() {
             if (answerInput[r].checked) {
                 value = answerInput[r].value;
                 if (value == correctAnswer) {
-                    console.log('bien');
+                    addPoints();
                 } else {
-                    console.log('mal');
+                    removePoints();
                 }
             }
         }
@@ -106,17 +126,18 @@ function application() {
 
     function clearTheInterval() {
         clearInterval(interval)
+
     }
 
 
     function countDownQuestion() {
-        interval = setInterval(count, 1000);
+        interval = setInterval(count, 2000);
         function count() {
             if (i <= questions.length) {
                 time--
-                console.log('-----', time, i)
+                console.log('-----', time)
                 if (time === 0) {
-                    time = 2;
+                    time = 10;
                     displayQuestion()
                 }
             }
