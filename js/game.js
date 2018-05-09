@@ -1,8 +1,6 @@
 function application() {
     var i = 0;
     var userPoints = 0;
-    var correctAnswer;
-    var buttonNextQuestion;
 
     function start() {
         buttonNextQuestion = document.querySelector('button');
@@ -53,94 +51,49 @@ function application() {
     });
 
     function displayQuestion() {
+        var answersContainer = document.querySelector('.option__display');
 
-        var questionContainer = document.querySelector('.question__display');
-        var optionContainer = document.querySelector('.option__display');
-
-        while (optionContainer.firstChild) {
-            optionContainer.removeChild(optionContainer.firstChild);
-            console.log(optionContainer);
+        while (answersContainer.firstChild) {
+            answersContainer.removeChild(answersContainer.firstChild);
+            console.log(answersContainer);
         }
-        if (i < questions.length) {
 
+        if (i < questions.length) {
+            var allQuestions = "";
+            var questionContainer = document.querySelector('.question__display');
+            questionContainer.setAttribute('id', i)
             questionContainer.innerHTML = questions[i].question.text;
 
             for (var j = 0; j < questions[i].answers.length; j++) {
-                var optionText = questions[i].answers[j].text;
-                var optionLabel = document.createElement('label');
+                var answerText = questions[i].answers[j].text;
+                var answerId = questions[i].answers[j].id;
 
+                allQuestions += `<li id=${j}>
+                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId}/>
+                                  <label>${answerText}</label>
+                                </li>`
 
-                optionLink = document.createElement('input');
-                optionLink.type = 'radio';
-                optionLink.name = 'nameRadio'
-                optionLabel.innerHTML = optionText;
-                optionContainer.appendChild(optionLink);
-                optionContainer.appendChild(optionLabel);
-
-
+                answersContainer.innerHTML = allQuestions;
             }
             i++;
-            //startTime = Date.now();
-            showClickedOption();
-        }
-        else if (i === questions.length) {
-            displayHistoricGame();
-            questionContainer.innerHTML = '';
-            i = 0;
-            buttonNextQuestion.classList.remove('hidden');
         }
     }
 
-    function displayHistoricGame() {
-        var historicGame = document.querySelector('.historic__game');
-        var userHistoricContainer = document.createElement('div');
-        var userNameContainer = document.createElement('p');
-        var userPointsContainer = document.createElement('p');
-        var userName = document.createTextNode('marta');
-
-        userNameContainer.appendChild(userName);
-        userPointsContainer.appendChild(userHistoricContainer);
-        userHistoricContainer.appendChild(userNameContainer);
-        historicGame.appendChild(userHistoricContainer);
-        userPointsContainer.innerHTML = userPoints;
-        userHistoricContainer.appendChild(userPointsContainer);
-    }
-
-
-
-    function showClickedOption() {
-        var listOptions = document.getElementsByTagName('li');
-        for (var i = 0; i < listOptions.length; i++) {
-            listOptions[i].addEventListener('click', showAnswerFeedback)
+    function checksIfchecked() {
+        var radios = document.querySelector('input')
+        var value;
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                value = radios[i].value;
+                console.log(value)
+            }
         }
     }
 
 
-    function showAnswerFeedback() {
-        if (this.id == correctAnswer) {
-            addPoints();
-            console.log('okeeii', userPoints);
-            displayQuestion();
-            //var totalTime = (endTime - startTime)/1000;
-            //console.log(totalTime);
-        }
-        else {
-            removePoints();
-            console.log('fatal', userPoints);
-            displayQuestion();
-            //var totalTime = (endTime - startTime)/1000;
-            //console.log(totalTime);
-        }
-    }
 
 
-    function addPoints() {
-        userPoints++
-    }
 
-    function removePoints() {
-        userPoints--
-    }
 
     return {
         start: start
