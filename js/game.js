@@ -1,10 +1,14 @@
 function application() {
     var i = 0;
     var userPoints = 0;
+    var questionContainer = document.querySelector('.question__display');
+    var buttonStartGame = document.querySelector('.button__start');
 
     function start() {
-        buttonNextQuestion = document.querySelector('button');
-        buttonNextQuestion.addEventListener('click', displayQuestion);
+        buttonStartGame.addEventListener('click', function () {
+            checksIfchecked();
+            displayQuestion();
+        });
     }
     // La defincion de la funcion, copiar y pegar en vuestro codigo:
     function getQuestions(callback) {
@@ -60,7 +64,6 @@ function application() {
 
         if (i < questions.length) {
             var allQuestions = "";
-            var questionContainer = document.querySelector('.question__display');
             questionContainer.setAttribute('id', i)
             questionContainer.innerHTML = questions[i].question.text;
 
@@ -69,23 +72,28 @@ function application() {
                 var answerId = questions[i].answers[j].id;
 
                 allQuestions += `<li id=${j}>
-                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId}/>
+                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId} />
                                   <label>${answerText}</label>
                                 </li>`
 
                 answersContainer.innerHTML = allQuestions;
             }
             i++;
+            buttonStartGame.innerHTML = 'Siguiente Pregunta';
         }
     }
 
     function checksIfchecked() {
-        var radios = document.querySelector('input')
+        var answerInput = document.getElementsByTagName('input')
         var value;
-        for (var i = 0; i < radios.length; i++) {
-            if (radios[i].checked) {
-                value = radios[i].value;
+        var questionId = questionContainer.getAttribute('id');
+        for (var r = 0; r < answerInput.length; r++) {
+            if (answerInput[r].checked) {
+                value = answerInput[r].value;
                 console.log(value)
+            }
+            else {
+
             }
         }
     }
