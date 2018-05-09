@@ -59,12 +59,18 @@ function application() {
         questions = data;
     });
 
+    //Removes the childs of a parent container, in this case the questions and answers, before showing the next ones
+
+    function cleanQuestions(parentContainer) {
+        while (parentContainer.firstChild) {
+            parentContainer.removeChild(parentContainer.firstChild);
+        }
+    }
+
     var displayQuestion = () => {
         var answersContainer = document.querySelector('.option__display');
+        cleanQuestions(answersContainer);
 
-        while (answersContainer.firstChild) {
-            answersContainer.removeChild(answersContainer.firstChild);
-        }
 
         if (i < questions.length) {
             time = 10;
@@ -86,6 +92,7 @@ function application() {
             }
             i++;
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
+
         } else {
             var endGame = document.querySelector('.end__game');
             buttonStartGame.style.display = "none";
