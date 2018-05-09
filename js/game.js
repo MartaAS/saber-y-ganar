@@ -88,7 +88,7 @@ function application() {
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
         } else {
             var endGame = document.querySelector('.end__game');
-            buttonStartGame.innerHTML = 'Otra oportunidad';
+            buttonStartGame.style.display = "none";
             questionContainer.innerHTML = '';
             clearTheInterval();
             showHistoryGame();
