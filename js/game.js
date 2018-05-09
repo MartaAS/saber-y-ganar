@@ -6,6 +6,8 @@ function application() {
     var interval;
     var userPoints = 0;
     var result = "";
+
+
     var questionContainer = document.querySelector('.question__display');
     var buttonStartGame = document.querySelector('.button__start');
 
@@ -17,6 +19,7 @@ function application() {
             displayQuestion();
         });
     }
+
     function getQuestions(callback) {
         var serverData = [
             {
@@ -57,7 +60,6 @@ function application() {
     });
 
     var displayQuestion = () => {
-
         var answersContainer = document.querySelector('.option__display');
 
         while (answersContainer.firstChild) {
@@ -65,7 +67,7 @@ function application() {
         }
 
         if (i < questions.length) {
-            time = 10;
+            time = 3;
             var allQuestions = "";
             questionContainer.innerHTML = questions[i].question.text;
             correctAnswer = questions[i].correctAnswerId;
@@ -86,6 +88,7 @@ function application() {
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
         } else {
             var endGame = document.querySelector('.end__game');
+            buttonStartGame.innerHTML = 'Otra oportunidad';
             questionContainer.innerHTML = '';
             clearTheInterval();
             showHistoryGame();
@@ -93,21 +96,25 @@ function application() {
         }
     }
 
-    function showHistoryGame() {
-        var historyContainer = document.querySelector('.historic__game');
-        result += `<p>Marta</p><p>${userPoints}</p>`
-        historyContainer.innerHTML = result;
-        console.log(result);
+    function clearTheInterval() {
+        clearInterval(interval)
     }
 
-    function addPoints() {
-        userPoints++
-        console.log(userPoints);
+
+    function countDownQuestion() {
+        //interval = setInterval(count, 1000);
+        function count() {
+            if (i <= questions.length) {
+                time--
+                console.log('-----', time)
+                if (time === 0) {
+                    time = 3;
+                    displayQuestion()
+                }
+            }
+        }
     }
 
-    function removePoints() {
-        userPoints--
-    }
 
     var checksIfchecked = () => {
         var answerInput = document.getElementsByTagName('input')
@@ -124,26 +131,20 @@ function application() {
         }
     }
 
-    function clearTheInterval() {
-        clearInterval(interval)
-
+    function addPoints() {
+        userPoints++
     }
 
-
-    function countDownQuestion() {
-        interval = setInterval(count, 2000);
-        function count() {
-            if (i <= questions.length) {
-                time--
-                console.log('-----', time)
-                if (time === 0) {
-                    time = 10;
-                    displayQuestion()
-                }
-            }
-        }
+    function removePoints() {
+        userPoints--
     }
 
+    function showHistoryGame() {
+        var historyContainer = document.querySelector('.historic__game');
+        result += `<p>Marta</p>
+                   <p>${userPoints}</p>`
+        historyContainer.innerHTML = result;
+    }
 
     return {
         start: start
