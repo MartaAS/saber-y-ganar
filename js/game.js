@@ -59,21 +59,18 @@ function application() {
         questions = data;
     });
 
-    //Removes the childs of a parent container, in this case the questions and answers, before showing the next ones
-
-    function cleanQuestions(parentContainer) {
-        while (parentContainer.firstChild) {
-            parentContainer.removeChild(parentContainer.firstChild);
+    //Removes the childs of a parent container, in this case the questions and answers, before showing the
+    function cleanQuestions(container) {
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
         }
     }
 
     var displayQuestion = () => {
-        var answersContainer = document.querySelector('.option__display');
-        cleanQuestions(answersContainer);
-
+        var answersContainer = document.querySelector('.option__display'); 3
+        cleanQuestions(answersContainer)
 
         if (i < questions.length) {
-            time = 10;
             var allQuestions = "";
             questionContainer.innerHTML = questions[i].question.text;
             correctAnswer = questions[i].correctAnswerId;
@@ -94,14 +91,20 @@ function application() {
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
 
         } else {
-            var endGame = document.querySelector('.end__game');
-            buttonStartGame.style.display = "none";
-            questionContainer.innerHTML = '';
+            doNotShowMessage()
             clearTheInterval();
             showHistoryGame();
             i = 0;
         }
     }
+
+
+    function doNotShowMessage() {
+        var endGame = document.querySelector('.end__game');
+        buttonStartGame.style.display = "none";
+        questionContainer.innerHTML = '';
+    }
+
 
     function clearTheInterval() {
         clearInterval(interval)
