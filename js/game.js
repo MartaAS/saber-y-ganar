@@ -1,16 +1,20 @@
 function application() {
+    var questions = [];
+    var time;
     var i = 0;
     var userPoints = 0;
     var questionContainer = document.querySelector('.question__display');
     var buttonStartGame = document.querySelector('.button__start');
+    var correctAnswer;
+    var interval;
 
     function start() {
         buttonStartGame.addEventListener('click', function () {
             checksIfchecked();
             displayQuestion();
+            countDownQuestion();
         });
     }
-    // La defincion de la funcion, copiar y pegar en vuestro codigo:
     function getQuestions(callback) {
         var serverData = [
             {
@@ -46,15 +50,12 @@ function application() {
         ]
         callback(serverData);
     };
-    // La teneis que usar pasando un callback, o sea una funcion:
-    // Ejemplo de uso:
-
-    var questions = [];
     getQuestions(function (data) {
         questions = data;
     });
 
-    function displayQuestion() {
+    var displayQuestion = () => {
+
         var answersContainer = document.querySelector('.option__display');
 
         while (answersContainer.firstChild) {
@@ -63,9 +64,11 @@ function application() {
         }
 
         if (i < questions.length) {
+            time = 2;
             var allQuestions = "";
-            questionContainer.setAttribute('id', i)
             questionContainer.innerHTML = questions[i].question.text;
+            correctAnswer = questions[i].correctAnswerId;
+
 
             for (var j = 0; j < questions[i].answers.length; j++) {
                 var answerText = questions[i].answers[j].text;
@@ -80,27 +83,45 @@ function application() {
             }
             i++;
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
+        } else {
+            questionContainer.innerHTML = '';
+            clearTheInterval();
         }
     }
 
-    function checksIfchecked() {
+    var checksIfchecked = () => {
         var answerInput = document.getElementsByTagName('input')
         var value;
-        var questionId = questionContainer.getAttribute('id');
         for (var r = 0; r < answerInput.length; r++) {
             if (answerInput[r].checked) {
                 value = answerInput[r].value;
-                console.log(value)
-            }
-            else {
-
+                if (value == correctAnswer) {
+                    console.log('bien');
+                } else {
+                    console.log('mal');
+                }
             }
         }
     }
 
+    function clearTheInterval() {
+        clearInterval(interval)
+    }
 
 
-
+    function countDownQuestion() {
+        interval = setInterval(count, 1000);
+        function count() {
+            if (i <= questions.length) {
+                time--
+                console.log('-----', time, i)
+                if (time === 0) {
+                    time = 2;
+                    displayQuestion()
+                }
+            }
+        }
+    }
 
 
     return {
