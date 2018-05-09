@@ -2,7 +2,6 @@ function application() {
     var questions = [];
     var time;
     var i = 0;
-    var correctAnswer;
     var interval;
     var userPoints = 0;
     var result = "";
@@ -73,7 +72,7 @@ function application() {
         if (i < questions.length) {
             var allQuestions = "";
             questionContainer.innerHTML = questions[i].question.text;
-            correctAnswer = questions[i].correctAnswerId;
+            questionContainer.setAttribute('dataCorrectAnswerId', questions[i].correctAnswerId);
 
 
             for (var j = 0; j < questions[i].answers.length; j++) {
