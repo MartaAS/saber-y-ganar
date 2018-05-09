@@ -13,8 +13,8 @@ function application() {
 
 
     function start() {
+        countDownQuestion();
         buttonStartGame.addEventListener('click', function () {
-            countDownQuestion();
             checksIfchecked();
             displayQuestion();
         });
@@ -67,7 +67,7 @@ function application() {
         }
 
         if (i < questions.length) {
-            time = 3;
+            time = 10;
             var allQuestions = "";
             questionContainer.innerHTML = questions[i].question.text;
             correctAnswer = questions[i].correctAnswerId;
@@ -102,13 +102,13 @@ function application() {
 
 
     function countDownQuestion() {
-        //interval = setInterval(count, 1000);
+        interval = setInterval(count, 1000);
         function count() {
             if (i <= questions.length) {
                 time--
                 console.log('-----', time)
                 if (time === 0) {
-                    time = 3;
+                    time = 10;
                     displayQuestion()
                 }
             }
@@ -124,8 +124,10 @@ function application() {
                 value = answerInput[r].value;
                 if (value == correctAnswer) {
                     addPoints();
+                    answerInput.innerHTML = 'es correcto';
                 } else {
                     removePoints();
+                    answerInput.innerHTML = 'es incorrecto';
                 }
             }
         }
