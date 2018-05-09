@@ -3,6 +3,7 @@ function application() {
     var time;
     var i = 0;
     var interval;
+    var correctAnswer;
     var userPoints = 0;
     var result = "";
 
@@ -72,7 +73,8 @@ function application() {
         if (i < questions.length) {
             var allQuestions = "";
             questionContainer.innerHTML = questions[i].question.text;
-            questionContainer.setAttribute('dataCorrectAnswerId', questions[i].correctAnswerId);
+            correctAnswer = questions[i].question.correctAnswerId
+
 
 
             for (var j = 0; j < questions[i].answers.length; j++) {
@@ -115,7 +117,6 @@ function application() {
         function count() {
             if (i <= questions.length) {
                 time--
-                console.log('-----', time)
                 if (time === 0) {
                     time = 10;
                     displayQuestion()
@@ -126,14 +127,14 @@ function application() {
 
 
     var checksIfchecked = () => {
-        var answerInput     = document.getElementsByTagName('input')
+        var answerInput = document.getElementsByTagName('input')
         var currentQuestion = document.querySelector('.question__display');
-        var foundQuestion   = questions.find(function(question) {
-                                               if (question.id == 300) {
-                                                 return question;
-                                                }
-                              });
-        foundQuestion.correctAnswerId
+        // var foundQuestion = questions.find(function (question) {
+        //     if (question.id == 300) {
+        //         return question;
+        //     }
+        // });
+        // foundQuestion.correctAnswerId
         var value;
         for (var r = 0; r < answerInput.length; r++) {
             if (answerInput[r].checked) {
