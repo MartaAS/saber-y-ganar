@@ -1,19 +1,20 @@
 function application() {
-    var questions = [];
-    var time;
-    var i = 0;
-    var interval;
+    var currentQuestionIndex = 0;
+    var intervalCountDown;
+    var countDownTime;
     var correctAnswer;
     var userPoints = 0;
-    var result = "";
 
-
-    var questionContainer = document.querySelector('.question__display');
-    var buttonStartGame = document.querySelector('.button__start');
+    var questionContainer;
+    var buttonStartGame;
 
 
     function start() {
-        countDownQuestion();
+        questionContainer = document.querySelector('.question__display');
+        buttonStartGame = document.querySelector('.button__start');
+        countDownTime = 9;
+        intervalCountDown = setInterval(countDown, 1000);
+        countDown();
         buttonStartGame.addEventListener('click', function () {
             //checksIfchecked();
             displayQuestion();
@@ -74,14 +75,16 @@ function application() {
         var answersContainer = document.querySelector('.option__display'); 3
         cleanQuestions(answersContainer)
 
-        if (i < questions.length) {
+        if (currentQuestionIndex < questions.length) {
             var allQuestions = "";
-            questionContainer.innerHTML = questions[i].question.text;
-            correctAnswer = questions[i].correctAnswerId
+            questionContainer.innerHTML = questions[currentQuestionIndex].question.text;
+            correctAnswer = questions[currentQuestionIndex].question.correctAnswerId
 
-            for (var j = 0; j < questions[i].answers.length; j++) {
-                var answerText = questions[i].answers[j].text;
-                var answerId = questions[i].answers[j].id;
+
+
+            for (var j = 0; j < questions[currentQuestionIndex].answers.length; j++) {
+                var answerText = questions[currentQuestionIndex].answers[j].text;
+                var answerId = questions[currentQuestionIndex].answers[j].id;
 
                 allQuestions += `<li id=${j}>
                                   <input id=${j} type="radio" name="optionAnswer" value=${answerId} onclick="application().getValueInput" />
@@ -91,8 +94,7 @@ function application() {
                 answersContainer.innerHTML = allQuestions;
 
             }
-
-            i++;
+            currentQuestionIndex++;
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
 
         } else {
@@ -113,7 +115,7 @@ function application() {
         doNotShowMessage()
         clearTheInterval();
         showHistoryGame();
-        i = 0;
+        currentQuestionIndex = 0;
     }
 
 
@@ -125,18 +127,39 @@ function application() {
 
 
     function clearTheInterval() {
-        clearInterval(interval)
+        clearInterval(intervalCountDown)
     }
 
 
-    function countDownQuestion() {
-        interval = setInterval(count, 1000);
-        function count() {
-            if (i <= questions.length) {
-                time--
-                if (time === 0) {
-                    time = 10;
-                    displayQuestion()
+
+
+
+    function countDown() {
+
+        if (currentQuestionIndex <= questions.length) {
+            countDownTime--
+            console.log(countDownTime);
+            if (countDownTime === 0) {
+                countDownTime = 9;
+                displayQuestion();
+            }
+        }
+    }
+
+
+
+    var checksIfchecked = () => {
+        var answerInput = document.getElementsByTagName('input')
+        var value;
+        for (var r = 0; r < answerInput.length; r++) {
+            if (answerInput[r].checked) {
+                value = answerInput[r].value;
+                if (value == correctAnswer) {
+                    addPoints();
+                    answerInput.innerHTML = 'es correcto';
+                } else {
+                    removePoints();
+                    answerInput.innerHTML = 'es incorrecto';
                 }
             }
         }
@@ -151,6 +174,7 @@ function application() {
     }
 
     function showHistoryGame() {
+        var result = "";
         var historyContainer = document.querySelector('.historic__game');
         result += `<p>Marta</p>
                    <p>${userPoints}</p>`
