@@ -92,12 +92,17 @@ function application() {
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
 
         } else {
-            doNotShowMessage()
-            clearTheInterval();
-            showHistoryGame();
-            i = 0;
+            displayEndGame()
         }
     }
+
+    function displayEndGame() {
+        doNotShowMessage()
+        clearTheInterval();
+        showHistoryGame();
+        i = 0;
+    }
+
 
 
     function doNotShowMessage() {
