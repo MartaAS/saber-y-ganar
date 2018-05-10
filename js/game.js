@@ -15,7 +15,7 @@ function application() {
         countDownTime = 9;
         intervalCountDown = setInterval(countDown, 1000);
         buttonStartGame.addEventListener('click', function () {
-            checksIfchecked();
+            calculateScore();
             displayQuestion();
             countDownTime = 9;
         });
@@ -133,7 +133,6 @@ function application() {
     function countDown() {
         if (currentQuestionIndex <= questions.length) {
             countDownTime--
-            console.log(countDownTime);
             if (countDownTime === 0) {
                 countDownTime = 9;
                 displayQuestion();
@@ -141,24 +140,35 @@ function application() {
         }
     }
 
-    //Una función hilo conductor, if checked, if right, html
-    var checksIfchecked = (addCalc) => {
+    //Una función hilo conductor, if checked, if right, sumar puntos
+
+    var checkIfInputChecked = function () {
         var answerInput = document.getElementsByTagName('input')
         var value;
         for (var r = 0; r < answerInput.length; r++) {
             if (answerInput[r].checked) {
                 value = answerInput[r].value;
-                if (value == correctAnswer) {
-                    addPoints();
-                    answerInput.innerHTML = 'es correcto';
-                } else {
-                    removePoints();
-                    answerInput.innerHTML = 'es incorrecto';
-                }
+                return value
             }
         }
     }
 
+    function checkIfRight() {
+        var value = checkIfInputChecked()
+        if (value == correctAnswer) {
+            return true
+        }
+        return false
+    }
+
+    function calculateScore() {
+        var correctValue = checkIfRight();
+        if (correctValue == true) {
+            addPoints()
+        } else {
+            removePoints()
+        }
+    }
 
     function addPoints() {
         userPoints++
