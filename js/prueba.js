@@ -151,10 +151,6 @@ function application() {
   }
 
 
-
-
-
-
   function addPoints() {
     userPoints++
   }

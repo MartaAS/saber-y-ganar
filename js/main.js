@@ -140,7 +140,7 @@ function application() {
   }
 
   function myFunction() {
-    var count = 19;
+    var count = 2;
     var number = document.getElementById('numero');
     var intervalo = setInterval(function () {
       count--;
