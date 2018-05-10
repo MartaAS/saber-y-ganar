@@ -96,6 +96,7 @@ function application() {
         }
     }
 
+
     function displayEndGame() {
         doNotShowMessage()
         clearTheInterval();
@@ -154,6 +155,7 @@ function application() {
             }
         }
     }
+
 
     function addPoints() {
         userPoints++
