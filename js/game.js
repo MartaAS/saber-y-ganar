@@ -1,24 +1,21 @@
 function application() {
     var currentQuestionIndex = 0;
+    var userPoints = 0;
+    var correctAnswer;
     var intervalCountDown;
     var countDownTime;
-    var correctAnswer;
-    var userPoints = 0;
 
     var questionContainer;
     var buttonStartGame;
 
 
     function start() {
-        questionContainer = document.querySelector('.question__display');
-        buttonStartGame = document.querySelector('.button__start');
+        userPoints = 0;
         countDownTime = 9;
         intervalCountDown = setInterval(countDown, 1000);
-        buttonStartGame.addEventListener('click', function () {
-            calculateScore();
-            displayQuestion();
-            countDownTime = 9;
-        });
+        questionContainer = document.querySelector('.question__display');
+        buttonStartGame = document.querySelector('.button__start');
+        buttonStartGame.addEventListener('click', startGame)
     }
 
     function getQuestions(callback) {
@@ -60,9 +57,20 @@ function application() {
         questions = data;
     });
 
-    function cleanQuestions(container) {
-        while (container.firstChild) {
-            container.removeChild(container.firstChild);
+    //Nombre de la función no me gusta ya que no solo inicia juego sino que pasa de pregunta también
+    function startGame() {
+        resetCountDownTime();
+        displayQuestion();
+        checkIfRight();
+    }
+
+    function resetCountDownTime() {
+        countDownTime = 9;
+    }
+
+    function cleanQuestions(containerAnswers) {
+        while (containerAnswers.firstChild) {
+            containerAnswers.removeChild(containerAnswers.firstChild);
         }
     }
 
@@ -74,7 +82,7 @@ function application() {
         if (currentQuestionIndex < questions.length) {
             var allQuestions = "";
             questionContainer.innerHTML = questions[currentQuestionIndex].question.text;
-            correctAnswer = questions[currentQuestionIndex].question.correctAnswerId
+            correctAnswer = questions[currentQuestionIndex].correctAnswerId
 
 
 
@@ -102,7 +110,6 @@ function application() {
         doNotShowMessage()
         clearTheInterval();
         showHistoryGame();
-        currentQuestionIndex = 0;
     }
 
 
@@ -116,7 +123,6 @@ function application() {
     function clearTheInterval() {
         clearInterval(intervalCountDown)
     }
-
 
     function countDown() {
         if (currentQuestionIndex <= questions.length) {
@@ -143,18 +149,9 @@ function application() {
     function checkIfRight() {
         var value = checkIfInputChecked()
         if (value == correctAnswer) {
-            return true
-        }
-        return false
-    }
-
-    function calculateScore() {
-        var correctValue = checkIfRight();
-        if (correctValue == true) {
             addPoints()
-        } else {
-            removePoints()
         }
+        removePoints()
     }
 
     function addPoints() {
