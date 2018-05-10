@@ -15,7 +15,7 @@ function application() {
     function start() {
         countDownQuestion();
         buttonStartGame.addEventListener('click', function () {
-            checksIfchecked();
+            //checksIfchecked();
             displayQuestion();
         });
     }
@@ -66,28 +66,32 @@ function application() {
         }
     }
 
+
+
     var displayQuestion = () => {
+
+
         var answersContainer = document.querySelector('.option__display'); 3
         cleanQuestions(answersContainer)
 
         if (i < questions.length) {
             var allQuestions = "";
             questionContainer.innerHTML = questions[i].question.text;
-            correctAnswer = questions[i].question.correctAnswerId
-
-
+            correctAnswer = questions[i].correctAnswerId
 
             for (var j = 0; j < questions[i].answers.length; j++) {
                 var answerText = questions[i].answers[j].text;
                 var answerId = questions[i].answers[j].id;
 
                 allQuestions += `<li id=${j}>
-                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId} />
+                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId} onclick="application().getValueInput" />
                                   <label>${answerText}</label>
                                 </li>`
 
                 answersContainer.innerHTML = allQuestions;
+
             }
+
             i++;
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
 
@@ -96,13 +100,21 @@ function application() {
         }
     }
 
+    function getValueInput() {
+        if (correctAnswer) {
+            alert("Es correcto");
+        } else {
+            alert("Do something else");
+        }
+    }
+
+
     function displayEndGame() {
         doNotShowMessage()
         clearTheInterval();
         showHistoryGame();
         i = 0;
     }
-
 
 
     function doNotShowMessage() {
@@ -130,31 +142,6 @@ function application() {
         }
     }
 
-
-    var checksIfchecked = () => {
-        var answerInput = document.getElementsByTagName('input')
-        var currentQuestion = document.querySelector('.question__display');
-        // var foundQuestion = questions.find(function (question) {
-        //     if (question.id == 300) {
-        //         return question;
-        //     }
-        // });
-        // foundQuestion.correctAnswerId
-        var value;
-        for (var r = 0; r < answerInput.length; r++) {
-            if (answerInput[r].checked) {
-                value = answerInput[r].value;
-                if (value == correctAnswer) {
-                    addPoints();
-                    answerInput.innerHTML = 'es correcto';
-                } else {
-                    removePoints();
-                    answerInput.innerHTML = 'es incorrecto';
-                }
-            }
-        }
-    }
-
     function addPoints() {
         userPoints++
     }
@@ -171,7 +158,8 @@ function application() {
     }
 
     return {
-        start: start
+        start: start,
+        getValueInput: getValueInput
     }
 
 }

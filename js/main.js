@@ -169,3 +169,10 @@ function application() {
 
 
 
+var answerInput = document.getElementsByTagName('input')
+for (var r = 0; r < answerInput.length; r++) {
+  answerInput[r].addEventListener('change', trial)
+}
+function trial() {
+  alert('hello')
+}
