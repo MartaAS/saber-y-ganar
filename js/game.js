@@ -14,10 +14,10 @@ function application() {
         buttonStartGame = document.querySelector('.button__start');
         countDownTime = 9;
         intervalCountDown = setInterval(countDown, 1000);
-        countDown();
         buttonStartGame.addEventListener('click', function () {
-            //checksIfchecked();
+            checksIfchecked();
             displayQuestion();
+            countDownTime = 9;
         });
     }
 
@@ -71,7 +71,6 @@ function application() {
 
     var displayQuestion = () => {
 
-
         var answersContainer = document.querySelector('.option__display'); 3
         cleanQuestions(answersContainer)
 
@@ -87,7 +86,7 @@ function application() {
                 var answerId = questions[currentQuestionIndex].answers[j].id;
 
                 allQuestions += `<li id=${j}>
-                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId} onclick="application().getValueInput" />
+                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId} />
                                   <label>${answerText}</label>
                                 </li>`
 
@@ -131,11 +130,7 @@ function application() {
     }
 
 
-
-
-
     function countDown() {
-
         if (currentQuestionIndex <= questions.length) {
             countDownTime--
             console.log(countDownTime);
@@ -146,9 +141,8 @@ function application() {
         }
     }
 
-
-
-    var checksIfchecked = () => {
+    //Una función hilo conductor, if checked, if right, html
+    var checksIfchecked = (addCalc) => {
         var answerInput = document.getElementsByTagName('input')
         var value;
         for (var r = 0; r < answerInput.length; r++) {
@@ -164,6 +158,7 @@ function application() {
             }
         }
     }
+
 
     function addPoints() {
         userPoints++
@@ -183,7 +178,6 @@ function application() {
 
     return {
         start: start,
-        getValueInput: getValueInput
     }
 
 }
