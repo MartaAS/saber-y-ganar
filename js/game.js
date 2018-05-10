@@ -1,16 +1,20 @@
 function application() {
     var currentQuestionIndex = 0;
-    var interval;
+    var intervalCountDown;
+    var countDownTime;
     var correctAnswer;
     var userPoints = 0;
-    var result = "";
 
-    var questionContainer = document.querySelector('.question__display');
-    var buttonStartGame = document.querySelector('.button__start');
+    var questionContainer;
+    var buttonStartGame;
 
 
     function start() {
-        countDownQuestion();
+        questionContainer = document.querySelector('.question__display');
+        buttonStartGame = document.querySelector('.button__start');
+        countDownTime = 9;
+        intervalCountDown = setInterval(countDown, 1000);
+        countDown();
         buttonStartGame.addEventListener('click', function () {
             checksIfchecked();
             displayQuestion();
@@ -110,24 +114,25 @@ function application() {
 
 
     function clearTheInterval() {
-        clearInterval(interval)
+        clearInterval(intervalCountDown)
     }
 
 
-    function countDownQuestion() {
-        var time = 5;
-        interval = setInterval(count, 1000);
-        function count() {
-            if (currentQuestionIndex <= questions.length) {
-                time--
-                console.log(time);
-                if (time === 0) {
-                    time = 5;
-                    displayQuestion()
-                }
+
+
+
+    function countDown() {
+
+        if (currentQuestionIndex <= questions.length) {
+            countDownTime--
+            console.log(countDownTime);
+            if (countDownTime === 0) {
+                countDownTime = 9;
+                displayQuestion();
             }
         }
     }
+
 
 
     var checksIfchecked = () => {
@@ -156,6 +161,7 @@ function application() {
     }
 
     function showHistoryGame() {
+        var result = "";
         var historyContainer = document.querySelector('.historic__game');
         result += `<p>Marta</p>
                    <p>${userPoints}</p>`
