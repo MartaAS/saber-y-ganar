@@ -60,16 +60,13 @@ function application() {
         questions = data;
     });
 
-    //Removes the childs of a parent container, in this case the questions and answers, before showing the
     function cleanQuestions(container) {
         while (container.firstChild) {
             container.removeChild(container.firstChild);
         }
     }
 
-
-
-    var displayQuestion = () => {
+    function displayQuestion() {
 
         var answersContainer = document.querySelector('.option__display'); 3
         cleanQuestions(answersContainer)
@@ -101,15 +98,6 @@ function application() {
         }
     }
 
-    function getValueInput() {
-        if (correctAnswer) {
-            alert("Es correcto");
-        } else {
-            alert("Do something else");
-        }
-    }
-
-
     function displayEndGame() {
         doNotShowMessage()
         clearTheInterval();
@@ -136,13 +124,12 @@ function application() {
             if (countDownTime === 0) {
                 countDownTime = 9;
                 displayQuestion();
+                //to fix this display, it has not to be here
             }
         }
     }
 
-    //Una función hilo conductor, if checked, if right, sumar puntos
-
-    var checkIfInputChecked = function () {
+    function checkIfInputChecked() {
         var answerInput = document.getElementsByTagName('input')
         var value;
         for (var r = 0; r < answerInput.length; r++) {
