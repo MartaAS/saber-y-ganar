@@ -1,6 +1,6 @@
 function application() {
     var currentQuestionIndex = 0;
-    var userPoints = 0;
+    var userPoints;
     var intervalCountDown;
     var countDownTime;
     var correctAnswer;
@@ -13,7 +13,6 @@ function application() {
     function start() {
         userPoints = 0;
         countDownTime = 9;
-
         questionContainer = document.querySelector('.question__display');
         buttonStartGame = document.querySelector('.button__start');
         buttonStartGame.addEventListener('click', startGame);
