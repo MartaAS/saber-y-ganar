@@ -1,5 +1,9 @@
 body{
-  background-color: aquamarine;
+    background-image: url(../images/imgSaberYganar.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-align: center;
+  
 }
 .active {
   color: red;
