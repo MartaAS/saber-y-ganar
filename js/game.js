@@ -56,9 +56,9 @@ function application() {
                 answers: [{ id: 16, text: 'C1' }, { id: 17, text: 'C2' }, { id: 18, text: 'C3' }],
                 correctAnswerId: 17
             },
-        ]
+        ];
         callback(serverData);
-    };
+    }
 
 
     function startGame() {
@@ -71,13 +71,16 @@ function application() {
         resetCountDownTime();
         moveIndexToNextQuestion();
         cleanQuestions();
-        if (currentQuestionIndex < questions.length) { //lo que va dentro del if en una función areThereMoreQuestions
+        if (areThereMoreQuestions()) {
             displayQuestion();
         } else {
             displayEndGame();
         }
     }
 
+    function areThereMoreQuestions() {
+        return currentQuestionIndex < questions.length;
+    }
 
     function moveIndexToNextQuestion() {
         currentQuestionIndex++;
@@ -128,10 +131,10 @@ function application() {
     }
 
     function displayEndGame() {
-        doNotShowMessage()
+        doNotShowMessage();
         clearTheInterval();
         showHistoryGame();
-        doNotDisplayButtonNext()
+        doNotDisplayButtonNext();
     }
 
 
@@ -143,13 +146,11 @@ function application() {
 
 
     function clearTheInterval() {
-        clearInterval(intervalCountDown)
+        clearInterval(intervalCountDown);
     }
 
     function countDown() {
-        countDownTime--
-        console.log(countDownTime)
-
+        countDownTime--;
         if (countDownTime === 0) {
             countDownTime = 9;
             timeOut();
@@ -165,8 +166,8 @@ function application() {
     }
 
     function correctAnswer() {
-        if (currentQuestionIndex < questions.length) {
-            return questions[currentQuestionIndex].correctAnswerId
+        if (areThereMoreQuestions()) {
+            return questions[currentQuestionIndex].correctAnswerId;
         }
     }
 
@@ -184,27 +185,21 @@ function application() {
 
     function addPoints() {
         if (countDownTime <= 2) {
-            console.log('+2')
-            return + 2
+            return + 2;
         } else if (countDownTime > 2 && countDownTime <= 10) {
-            console.log('+1')
-            return + 1
+            return + 1;
         } else {
-            console.log('+0')
-            return 0
+            return 0;
         }
     }
 
     function removePoints() {
         if (countDownTime > 20) {
-            console.log('-3')
-            return -3
+            return -3;
         } else if (countDownTime > 10) {
-            console.log('-2')
-            return - 2
+            return - 2;
         } else if (countDownTime < 10) {
-            console.log('-1')
-            return - 1
+            return - 1;
         }
     }
 
