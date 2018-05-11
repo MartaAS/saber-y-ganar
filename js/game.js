@@ -72,37 +72,33 @@ function application() {
         resetCountDownTime();
         moveIndexToNextQuestion();
         cleanQuestions();
-        displayQuestion();
-
+        if (currentQuestionIndex < questions.length) { //lo que va dentro del if en una función areThereMoreQuestions
+            displayQuestion();
+        } else {
+            displayEndGame();
+        }
     }
+
 
     function moveIndexToNextQuestion() {
         currentQuestionIndex++;
     }
 
     function displayQuestion() {
-        if (currentQuestionIndex < questions.length) {
-            var allQuestions = "";
-            questionContainer.innerHTML = questions[currentQuestionIndex].question.text;
+        var allQuestions = "";
+        questionContainer.innerHTML = questions[currentQuestionIndex].question.text;
+        for (var j = 0; j < questions[currentQuestionIndex].answers.length; j++) {
+            var answerText = questions[currentQuestionIndex].answers[j].text;
+            var answerId = questions[currentQuestionIndex].answers[j].id;
 
 
-            for (var j = 0; j < questions[currentQuestionIndex].answers.length; j++) {
-                var answerText = questions[currentQuestionIndex].answers[j].text;
-                var answerId = questions[currentQuestionIndex].answers[j].id;
-
-
-                allQuestions += `<li id=${j}>
+            allQuestions += `<li id=${j}>
                                   <input id=${j} type="radio" name="optionAnswer" value=${answerId} />
                                   <label>${answerText}</label>
                                 </li>`;
 
-                paintQuestions(allQuestions);
-
-            }
+            paintQuestions(allQuestions);
             displayButtons();
-
-        } else {
-            displayEndGame();
         }
     }
 
@@ -128,11 +124,15 @@ function application() {
         buttonNext.style.display = "block";
     }
 
+    function doNotDisplayButtonNext() {
+        buttonNext.style.display = "none";
+    }
+
     function displayEndGame() {
         doNotShowMessage()
         clearTheInterval();
         showHistoryGame();
-        buttonNext.style.display = "none";
+        doNotDisplayButtonNext()
     }
 
 
@@ -148,22 +148,24 @@ function application() {
     }
 
     function countDown() {
-        if (currentQuestionIndex <= questions.length) {
-            console.log(countDownTime)
+        countDownTime--
+        console.log(countDownTime)
 
-            countDownTime--
-            if (countDownTime === 0) {
-                countDownTime = 9;
-                displayQuestion();
-            }
+        if (countDownTime === 0) {
+            countDownTime = 9;
+            timeOut();
         }
+    }
+
+    function timeOut() {
+        onNextQuestion();
     }
 
     function resetCountDownTime() {
         countDownTime = 9;
     }
 
-    correctAnswer = function () {
+    function correctAnswer() {
         if (currentQuestionIndex < questions.length) {
             return questions[currentQuestionIndex].correctAnswerId
         }
