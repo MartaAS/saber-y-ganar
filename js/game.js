@@ -13,12 +13,13 @@ function application() {
     function start() {
         userPoints = 0;
         countDownTime = 9;
-        intervalCountDown = setInterval(countDown, 1000);
+
         questionContainer = document.querySelector('.question__display');
         buttonStartGame = document.querySelector('.button__start');
-        buttonStartGame.addEventListener('click', displayQuestion);
+        buttonStartGame.addEventListener('click', startGame);
         buttonNext = document.querySelector('.button__next');
-        buttonNext.addEventListener('click', showNextQuestion);
+        buttonNext.addEventListener('click', onNextQuestion);
+        buttonNext.style.display = "none";
     }
 
     function getQuestions(callback) {
@@ -60,37 +61,21 @@ function application() {
         questions = data;
     });
 
-    function showNextQuestion() {
+    function startGame() {
+        intervalCountDown = setInterval(countDown, 1000);
         displayQuestion();
-        currentQuestionIndex = 0;
-
-        userPoints += checkIfRight(correctAnswer(), checkIfInputChecked(document.querySelectorAll('input')));
-        countDownTime = resetCountDownTime();
-
-
-
     }
 
-    function resetCountDownTime() {
-        return 9;
-    }
-
-    function cleanQuestions(containerAnswers) {
-        while (containerAnswers.firstChild) {
-            containerAnswers.removeChild(containerAnswers.firstChild);
-        }
-    }
-
-    correctAnswer = function () {
-        if (currentQuestionIndex < questions.length) {
-            console.log('queueueu', questions[currentQuestionIndex].correctAnswerId)
-            return questions[currentQuestionIndex].correctAnswerId
-        }
+    function onNextQuestion() {
+        updateScore();
+        resetCountDownTime();
+        currentQuestionIndex++;
+        displayQuestion();
     }
 
     function displayQuestion() {
 
-        var answersContainer = document.querySelector('.option__display'); 3
+        var answersContainer = document.querySelector('.option__display');
         cleanQuestions(answersContainer)
 
         if (currentQuestionIndex < questions.length) {
@@ -111,17 +96,30 @@ function application() {
                 answersContainer.innerHTML = allQuestions;
 
             }
-            currentQuestionIndex++
+
+            showButton();
 
         } else {
             displayEndGame()
         }
     }
 
+    function cleanQuestions(containerAnswers) {
+        while (containerAnswers.firstChild) {
+            containerAnswers.removeChild(containerAnswers.firstChild);
+        }
+    }
+
+    function displayButtons() {
+        buttonStartGame.style.display = "none";
+        buttonNext.style.display = "block";
+    }
+
     function displayEndGame() {
         doNotShowMessage()
         clearTheInterval();
         showHistoryGame();
+        buttonNext.style.display = "none";
     }
 
 
@@ -138,7 +136,7 @@ function application() {
 
     function countDown() {
         if (currentQuestionIndex <= questions.length) {
-            // console.log(countDownTime)
+            console.log(countDownTime)
 
             countDownTime--
             if (countDownTime === 0) {
@@ -148,6 +146,15 @@ function application() {
         }
     }
 
+    function resetCountDownTime() {
+        countDownTime = 9;
+    }
+
+    correctAnswer = function () {
+        if (currentQuestionIndex < questions.length) {
+            return questions[currentQuestionIndex].correctAnswerId
+        }
+    }
 
     function checkIfInputChecked(answerInput) {
         for (var r = 0; r < answerInput.length; r++) {
@@ -162,16 +169,17 @@ function application() {
         return correctAnswer == value ? addPoints() : removePoints()
     }
 
-
     function addPoints() {
         return + 1
     }
-
 
     function removePoints() {
         return -1
     }
 
+    function updateScore() {
+        userPoints += checkIfRight(correctAnswer(), checkIfInputChecked(document.querySelectorAll('input')));
+    }
 
     function showHistoryGame() {
         var result = "";
