@@ -11,6 +11,9 @@ function application() {
 
 
     function start() {
+        getQuestions(function (data) {
+            questions = data;
+        });
         userPoints = 0;
         countDownTime = 9;
         questionContainer = document.querySelector('.question__display');
@@ -56,9 +59,7 @@ function application() {
         ]
         callback(serverData);
     };
-    getQuestions(function (data) {
-        questions = data;
-    });
+
 
     function startGame() {
         intervalCountDown = setInterval(countDown, 1000);
@@ -68,44 +69,52 @@ function application() {
     function onNextQuestion() {
         updateScore();
         resetCountDownTime();
-        currentQuestionIndex++;
-        displayQuestion();
-    }
-
-    function displayQuestion() {
-
-        var answersContainer = document.querySelector('.option__display');
-        cleanQuestions(answersContainer)
-
-        if (currentQuestionIndex < questions.length) {
-            var allQuestions = "";
-            questionContainer.innerHTML = questions[currentQuestionIndex].question.text;
-
-
-            for (var j = 0; j < questions[currentQuestionIndex].answers.length; j++) {
-                var answerText = questions[currentQuestionIndex].answers[j].text;
-                var answerId = questions[currentQuestionIndex].answers[j].id;
-
-
-                allQuestions += `<li id=${j}>
-                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId} />
-                                  <label>${answerText}</label>
-                                </li>`
-
-                answersContainer.innerHTML = allQuestions;
-
-            }
-
-            displayButtons();
-
+        moveIndexToNextQuestion();
+        cleanQuestions();
+        if (currentQuestionIndex < questions.length) { //lo que va dentro del if en una función areThereMoreQuestions
+            displayQuestion();
         } else {
-            displayEndGame()
+            displayEndGame();
         }
     }
 
-    function cleanQuestions(containerAnswers) {
-        while (containerAnswers.firstChild) {
-            containerAnswers.removeChild(containerAnswers.firstChild);
+
+    function moveIndexToNextQuestion() {
+        currentQuestionIndex++;
+    }
+
+    function displayQuestion() {
+        var allQuestions = "";
+        questionContainer.innerHTML = questions[currentQuestionIndex].question.text;
+        for (var j = 0; j < questions[currentQuestionIndex].answers.length; j++) {
+            var answerText = questions[currentQuestionIndex].answers[j].text;
+            var answerId = questions[currentQuestionIndex].answers[j].id;
+
+
+            allQuestions += `<li id=${j}>
+                                  <input id=${j} type="radio" name="optionAnswer" value=${answerId} />
+                                  <label>${answerText}</label>
+                                </li>`;
+
+            paintQuestions(allQuestions);
+            displayButtons();
+        }
+    }
+
+    function getAnswerContainer() {
+        var answersContainer = document.querySelector('.option__display');
+        return answersContainer;
+    }
+
+    function paintQuestions(allQuestions) {
+        getAnswerContainer().innerHTML = allQuestions;
+
+    }
+
+    function cleanQuestions() {
+        var answerContainer = getAnswerContainer();
+        while (answerContainer.firstChild) {
+            answerContainer.removeChild(answerContainer.firstChild);
         }
     }
 
@@ -114,11 +123,15 @@ function application() {
         buttonNext.style.display = "block";
     }
 
+    function doNotDisplayButtonNext() {
+        buttonNext.style.display = "none";
+    }
+
     function displayEndGame() {
         doNotShowMessage()
         clearTheInterval();
         showHistoryGame();
-        buttonNext.style.display = "none";
+        doNotDisplayButtonNext()
     }
 
 
@@ -134,28 +147,30 @@ function application() {
     }
 
     function countDown() {
-        if (currentQuestionIndex <= questions.length) {
-            console.log(countDownTime)
+        countDownTime--
+        console.log(countDownTime)
 
-            countDownTime--
-            if (countDownTime === 0) {
-                countDownTime = 9;
-                displayQuestion();
-            }
+        if (countDownTime === 0) {
+            countDownTime = 9;
+            timeOut();
         }
+    }
+
+    function timeOut() {
+        onNextQuestion();
     }
 
     function resetCountDownTime() {
         countDownTime = 9;
     }
 
-    correctAnswer = function () {
+    function correctAnswer() {
         if (currentQuestionIndex < questions.length) {
             return questions[currentQuestionIndex].correctAnswerId
         }
     }
 
-    function checkIfInputChecked(answerInput) {
+    function checkIfInputChecked(answerInput) { //getAnswerValue
         for (var r = 0; r < answerInput.length; r++) {
             if (answerInput[r].checked) {
                 return answerInput[r].value;
@@ -163,17 +178,34 @@ function application() {
         }
     }
 
-    function checkIfRight(correctAnswer, value) {
-        console.log(correctAnswer, value);
-        return correctAnswer == value ? addPoints() : removePoints()
+    function checkIfRight(correctAnswer, answerValue) { //calculatePoints, checkifr suena a validación y es confuso
+        return correctAnswer == answerValue ? addPoints() : removePoints()
     }
 
     function addPoints() {
-        return + 1
+        if (countDownTime <= 2) {
+            console.log('+2')
+            return + 2
+        } else if (countDownTime > 2 && countDownTime <= 10) {
+            console.log('+1')
+            return + 1
+        } else {
+            console.log('+0')
+            return 0
+        }
     }
 
     function removePoints() {
-        return -1
+        if (countDownTime > 20) {
+            console.log('-3')
+            return -3
+        } else if (countDownTime > 10) {
+            console.log('-2')
+            return - 2
+        } else if (countDownTime < 10) {
+            console.log('-1')
+            return - 1
+        }
     }
 
     function updateScore() {
