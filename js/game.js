@@ -97,7 +97,7 @@ function application() {
 
             }
 
-            showButton();
+            displayButtons();
 
         } else {
             displayEndGame()
@@ -164,17 +164,34 @@ function application() {
         }
     }
 
-    function checkIfRight(correctAnswer, value) {
-        console.log(correctAnswer, value);
-        return correctAnswer == value ? addPoints() : removePoints()
+    function checkIfRight(correctAnswer, answerValue) {
+        return correctAnswer == answerValue ? addPoints() : removePoints()
     }
 
     function addPoints() {
-        return + 1
+        if (countDownTime <= 2) {
+            console.log('+2')
+            return + 2
+        } else if (countDownTime > 2 && countDownTime <= 10) {
+            console.log('+1')
+            return + 1
+        } else {
+            console.log('+0')
+            return 0
+        }
     }
 
     function removePoints() {
-        return -1
+        if (countDownTime > 20) {
+            console.log('-3')
+            return -3
+        } else if (countDownTime > 10) {
+            console.log('-2')
+            return - 2
+        } else if (countDownTime < 10) {
+            console.log('-1')
+            return - 1
+        }
     }
 
     function updateScore() {
