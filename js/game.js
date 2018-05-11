@@ -1,9 +1,9 @@
 function application() {
     var currentQuestionIndex = 0;
     var userPoints = 0;
-    var correctAnswer;
     var intervalCountDown;
     var countDownTime;
+    var correctAnswer;
 
     var questionContainer;
     var buttonStartGame;
@@ -56,21 +56,32 @@ function application() {
     getQuestions(function (data) {
         questions = data;
     });
+    var isInit = false
 
-    //Nombre de la función no me gusta ya que no solo inicia juego sino que pasa de pregunta también
     function startGame() {
-        resetCountDownTime();
+        if (isInit) {
+            userPoints += checkIfRight(correctAnswer(), checkIfInputChecked(document.querySelectorAll('input')));
+        }
+        isInit = true
+        countDownTime = resetCountDownTime();
         displayQuestion();
-        checkIfRight();
+
     }
 
     function resetCountDownTime() {
-        countDownTime = 9;
+        return 9;
     }
 
     function cleanQuestions(containerAnswers) {
         while (containerAnswers.firstChild) {
             containerAnswers.removeChild(containerAnswers.firstChild);
+        }
+    }
+
+    correctAnswer = function () {
+        if (currentQuestionIndex < questions.length) {
+            console.log(questions[currentQuestionIndex].correctAnswerId)
+            return questions[currentQuestionIndex].correctAnswerId
         }
     }
 
@@ -82,13 +93,12 @@ function application() {
         if (currentQuestionIndex < questions.length) {
             var allQuestions = "";
             questionContainer.innerHTML = questions[currentQuestionIndex].question.text;
-            correctAnswer = questions[currentQuestionIndex].correctAnswerId
-
 
 
             for (var j = 0; j < questions[currentQuestionIndex].answers.length; j++) {
                 var answerText = questions[currentQuestionIndex].answers[j].text;
                 var answerId = questions[currentQuestionIndex].answers[j].id;
+
 
                 allQuestions += `<li id=${j}>
                                   <input id=${j} type="radio" name="optionAnswer" value=${answerId} />
@@ -98,7 +108,7 @@ function application() {
                 answersContainer.innerHTML = allQuestions;
 
             }
-            currentQuestionIndex++;
+            currentQuestionIndex++
             buttonStartGame.innerHTML = 'Siguiente Pregunta';
 
         } else {
@@ -126,40 +136,34 @@ function application() {
 
     function countDown() {
         if (currentQuestionIndex <= questions.length) {
+            console.log(countDownTime)
+
             countDownTime--
             if (countDownTime === 0) {
                 countDownTime = 9;
                 displayQuestion();
-                //to fix this display, it has not to be here
             }
         }
     }
 
-    function checkIfInputChecked() {
-        var answerInput = document.getElementsByTagName('input')
-        var value;
+    function checkIfInputChecked(answerInput) {
         for (var r = 0; r < answerInput.length; r++) {
             if (answerInput[r].checked) {
-                value = answerInput[r].value;
-                return value
+                return answerInput[r].value;
             }
         }
     }
 
-    function checkIfRight() {
-        var value = checkIfInputChecked()
-        if (value == correctAnswer) {
-            addPoints()
-        }
-        removePoints()
+    function checkIfRight(correctAnswer, value) {
+        return correctAnswer == value ? addPoints() : removePoints()
     }
 
     function addPoints() {
-        userPoints++
+        return + 1
     }
 
     function removePoints() {
-        userPoints--
+        return - 1
     }
 
     function showHistoryGame() {
