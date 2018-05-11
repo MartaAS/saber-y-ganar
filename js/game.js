@@ -1,6 +1,6 @@
 function application() {
     var currentQuestionIndex = 0;
-    var userPoints = 0;
+    var userPoints;
     var intervalCountDown;
     var countDownTime;
     var correctAnswer;
@@ -11,6 +11,9 @@ function application() {
 
 
     function start() {
+        getQuestions(function (data) {
+            questions = data;
+        });
         userPoints = 0;
         countDownTime = 9;
 
@@ -57,9 +60,7 @@ function application() {
         ]
         callback(serverData);
     };
-    getQuestions(function (data) {
-        questions = data;
-    });
+
 
     function startGame() {
         intervalCountDown = setInterval(countDown, 1000);
@@ -69,15 +70,17 @@ function application() {
     function onNextQuestion() {
         updateScore();
         resetCountDownTime();
-        currentQuestionIndex++;
+        moveIndexToNextQuestion();
+        cleanQuestions();
         displayQuestion();
+
+    }
+
+    function moveIndexToNextQuestion() {
+        currentQuestionIndex++;
     }
 
     function displayQuestion() {
-
-        var answersContainer = document.querySelector('.option__display');
-        cleanQuestions(answersContainer)
-
         if (currentQuestionIndex < questions.length) {
             var allQuestions = "";
             questionContainer.innerHTML = questions[currentQuestionIndex].question.text;
@@ -91,22 +94,32 @@ function application() {
                 allQuestions += `<li id=${j}>
                                   <input id=${j} type="radio" name="optionAnswer" value=${answerId} />
                                   <label>${answerText}</label>
-                                </li>`
+                                </li>`;
 
-                answersContainer.innerHTML = allQuestions;
+                paintQuestions(allQuestions);
 
             }
-
             displayButtons();
 
         } else {
-            displayEndGame()
+            displayEndGame();
         }
     }
 
-    function cleanQuestions(containerAnswers) {
-        while (containerAnswers.firstChild) {
-            containerAnswers.removeChild(containerAnswers.firstChild);
+    function getAnswerContainer() {
+        var answersContainer = document.querySelector('.option__display');
+        return answersContainer;
+    }
+
+    function paintQuestions(allQuestions) {
+        getAnswerContainer().innerHTML = allQuestions;
+
+    }
+
+    function cleanQuestions() {
+        var answerContainer = getAnswerContainer();
+        while (answerContainer.firstChild) {
+            answerContainer.removeChild(answerContainer.firstChild);
         }
     }
 
