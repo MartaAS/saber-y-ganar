@@ -97,7 +97,7 @@ function application() {
 
             }
 
-            showButton();
+            displayButtons();
 
         } else {
             displayEndGame()
