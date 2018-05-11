@@ -171,7 +171,7 @@ function application() {
         }
     }
 
-    function checkIfInputChecked(answerInput) {
+    function checkIfInputChecked(answerInput) { //getAnswerValue
         for (var r = 0; r < answerInput.length; r++) {
             if (answerInput[r].checked) {
                 return answerInput[r].value;
@@ -179,7 +179,7 @@ function application() {
         }
     }
 
-    function checkIfRight(correctAnswer, answerValue) {
+    function checkIfRight(correctAnswer, answerValue) { //calculatePoints, checkifr suena a validación y es confuso
         return correctAnswer == answerValue ? addPoints() : removePoints()
     }
 
