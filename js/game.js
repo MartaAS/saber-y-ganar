@@ -7,6 +7,7 @@ function application() {
 
     var questionContainer;
     var buttonStartGame;
+    var buttonNext;
 
 
     function start() {
@@ -15,7 +16,9 @@ function application() {
         intervalCountDown = setInterval(countDown, 1000);
         questionContainer = document.querySelector('.question__display');
         buttonStartGame = document.querySelector('.button__start');
-        buttonStartGame.addEventListener('click', startGame)
+        buttonStartGame.addEventListener('click', displayQuestion);
+        buttonNext = document.querySelector('.button__next');
+        buttonNext.addEventListener('click', showNextQuestion);
     }
 
     function getQuestions(callback) {
@@ -56,15 +59,15 @@ function application() {
     getQuestions(function (data) {
         questions = data;
     });
-    var isInit = false
 
-    function startGame() {
-        if (isInit) {
-            userPoints += checkIfRight(correctAnswer(), checkIfInputChecked(document.querySelectorAll('input')));
-        }
-        isInit = true
-        countDownTime = resetCountDownTime();
+    function showNextQuestion() {
         displayQuestion();
+        currentQuestionIndex = 0;
+
+        userPoints += checkIfRight(correctAnswer(), checkIfInputChecked(document.querySelectorAll('input')));
+        countDownTime = resetCountDownTime();
+
+
 
     }
 
@@ -80,7 +83,7 @@ function application() {
 
     correctAnswer = function () {
         if (currentQuestionIndex < questions.length) {
-            console.log(questions[currentQuestionIndex].correctAnswerId)
+            console.log('queueueu', questions[currentQuestionIndex].correctAnswerId)
             return questions[currentQuestionIndex].correctAnswerId
         }
     }
@@ -109,7 +112,6 @@ function application() {
 
             }
             currentQuestionIndex++
-            buttonStartGame.innerHTML = 'Siguiente Pregunta';
 
         } else {
             displayEndGame()
@@ -136,7 +138,7 @@ function application() {
 
     function countDown() {
         if (currentQuestionIndex <= questions.length) {
-            console.log(countDownTime)
+            // console.log(countDownTime)
 
             countDownTime--
             if (countDownTime === 0) {
@@ -145,6 +147,7 @@ function application() {
             }
         }
     }
+
 
     function checkIfInputChecked(answerInput) {
         for (var r = 0; r < answerInput.length; r++) {
@@ -155,16 +158,20 @@ function application() {
     }
 
     function checkIfRight(correctAnswer, value) {
+        console.log(correctAnswer, value);
         return correctAnswer == value ? addPoints() : removePoints()
     }
+
 
     function addPoints() {
         return + 1
     }
 
+
     function removePoints() {
-        return - 1
+        return -1
     }
+
 
     function showHistoryGame() {
         var result = "";
