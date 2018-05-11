@@ -170,7 +170,7 @@ function application() {
         }
     }
 
-    function checkIfInputChecked(answerInput) { //getAnswerValue
+    function getAnswerValue(answerInput) {
         for (var r = 0; r < answerInput.length; r++) {
             if (answerInput[r].checked) {
                 return answerInput[r].value;
@@ -178,8 +178,8 @@ function application() {
         }
     }
 
-    function checkIfRight(correctAnswer, answerValue) { //calculatePoints, checkifr suena a validación y es confuso
-        return correctAnswer == answerValue ? addPoints() : removePoints()
+    function calculatePoints(correctAnswer, answerValue) {
+        return correctAnswer == answerValue ? addPoints() : removePoints();
     }
 
     function addPoints() {
@@ -209,7 +209,7 @@ function application() {
     }
 
     function updateScore() {
-        userPoints += checkIfRight(correctAnswer(), checkIfInputChecked(document.querySelectorAll('input')));
+        userPoints += calculatePoints(correctAnswer(), getAnswerValue(document.querySelectorAll('input')));
     }
 
     function showHistoryGame() {
